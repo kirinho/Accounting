@@ -1,19 +1,9 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Title</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <p th:text="'Hello, ' + ${greetings}"/>-->
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting Website</title>
+    <title>Login - Accounting Website</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
@@ -26,7 +16,7 @@
 
 
         .dark-theme {
-            --background-color: #000000;
+            --background-color: #333333;
             --text-color: #ffffff;
         }
 
@@ -66,9 +56,6 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="login">Login</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="register">Register</a>
             </li>
             <li class="nav-item">
@@ -81,51 +68,32 @@
     </div>
 </nav>
 
-
-<header class="jumbotron text-center">
-    <h1>Welcome to Your Accounting Dashboard</h1>
-    <p>Effortlessly manage your finances and stay on top of your money.</p>
-    <a class="btn btn-primary btn-lg" href="#">Get Started</a>
-</header>
-
-
-<section class="container">
-    <div class="row">
+<section class="container my-5">
+    <div class="row justify-content-center">
         <div class="col-md-4">
-            <h2>Track Expenses</h2>
-            <p>Monitor your spending habits with our easy-to-use expense tracking tools.</p>
-            <a href="#">Learn More</a>
-        </div>
-        <div class="col-md-4">
-            <h2>Create Budgets</h2>
-            <p>Set up budgets for different categories and achieve your financial goals.</p>
-            <a href="#">Learn More</a>
-        </div>
-        <div class="col-md-4">
-            <h2>Generate Reports</h2>
-            <p>Get insights into your financial health with detailed reports and analytics.</p>
-            <a href="#">Learn More</a>
+            <h2>Login</h2>
+            <form action="process_login.php" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
         </div>
     </div>
 </section>
-
-
-<section class="container text-center my-5">
-    <!-- You can add your graph or chart here -->
-    <p>Placeholder for a financial graph or chart goes here.</p>
-</section>
-
 
 <footer class="text-center py-3">
     <p>&copy; 2023 Accounting Website</p>
 </footer>
 
-
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
 <script>
     // Function to set the theme based on user preference
     function setTheme() {
@@ -152,11 +120,7 @@
     // Call setTheme to apply the theme when the page loads
     setTheme();
 </script>
+
 </body>
 </html>
-
-
-
-
-
 
