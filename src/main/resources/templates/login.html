@@ -40,6 +40,20 @@
         .theme-switch .custom-control-label::before {
             content: '';
         }
+
+        /* Style for the password toggle button and icons */
+        .password-group {
+            position: relative;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            padding: 5px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 <body>
@@ -77,9 +91,15 @@
                     <label for="username">Username</label>
                     <input type="text" class="form-control" id="username" name="username" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group password-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password" required>
+                        <!-- Replace with PNG image button -->
+                        <button type="button" class="btn password-toggle" id="passwordToggle">
+                            <img src="eye.png" alt="Toggle Password" id="toggleImage" width="25" height="25">
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
             </form>
@@ -117,10 +137,30 @@
         setTheme(); // Set the theme immediately upon switch change
     });
 
+    // Password toggle functionality
+    const passwordInput = document.querySelector('#password');
+    const passwordToggle = document.querySelector('#passwordToggle');
+    const toggleImage = document.querySelector('#toggleImage');
+    let passwordVisible = false; // Track password visibility
+
+    passwordToggle.addEventListener('click', function () {
+        if (passwordVisible) {
+            passwordInput.type = 'password';
+            toggleImage.src = 'eye.png'; // Set the "eye" icon
+        } else {
+            passwordInput.type = 'text';
+            toggleImage.src = 'eye-slash.png'; // Set the "eye-slash" icon
+        }
+        passwordVisible = !passwordVisible; // Toggle the visibility state
+    });
+
     // Call setTheme to apply the theme when the page loads
     setTheme();
 </script>
 
 </body>
 </html>
+
+
+
 

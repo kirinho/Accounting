@@ -22,5 +22,17 @@ public class MainController {
 //        model.addAttribute("greetings", "Main page");
         return "register";
     }
+
+    @GetMapping("/account")
+    public String account(Model model) {
+//        model.addAttribute("greetings", "Main page");
+        return "account";
+    }
+
+    @GetMapping("/editProfile")
+    public String editProfile(Model model) {
+//        model.addAttribute("greetings", "Main page");
+        return "editProfile";
+    }
 }
 

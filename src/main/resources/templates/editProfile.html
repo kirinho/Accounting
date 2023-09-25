@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - Accounting Website</title>
+  <title>Edit Profile - Accounting Website</title>
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom CSS -->
@@ -51,6 +51,24 @@
         top: 50%;
         transform: translateY(-50%);
     }
+
+    /* Style for the custom file input container */
+    .file-input-container {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .file-input-container input[type="file"] {
+        display: none;
+    }
+
+    /* Style for the custom file input text */
+    .file-input-text {
+        font-size: 16px;
+        color: #666;
+    }
   </style>
 </head>
 <body>
@@ -66,9 +84,7 @@
       <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="login">Login</a>
-      </li>
+
       <li class="nav-item">
         <div class="theme-switch custom-control custom-switch d-inline-block">
           <input type="checkbox" class="custom-control-input" id="themeSwitch">
@@ -81,25 +97,39 @@
 
 <section class="container my-5">
   <div class="row justify-content-center">
-    <div class="col-md-4">
-      <h2>Register</h2>
-      <form action="process_register.php" method="POST">
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" class="form-control" id="username" name="username" required>
-        </div>
-        <div class="form-group password-group">
-          <label for="password">Password</label>
-          <div class="input-group">
-            <input type="password" class="form-control" id="password" name="password" required>
-            <!-- Replace with PNG image button -->
-            <button type="button" class="btn password-toggle" id="passwordToggle">
-              <img src="eye.png" alt="Toggle Password" id="toggleImage" width="25" height="25">
-            </button>
+    <div class="col-md-6">
+      <h2>Edit Profile</h2>
+      <form action="process_edit_profile.php" method="POST">
+        <!-- Profile Photo Upload -->
+        <div class="form-group profile-photo-upload">
+          <label for="profilePhoto">Profile Photo</label>
+          <div class="file-input-container">
+            <label for="profilePhoto" class="file-input-text">Drag & Drop or Click to Upload</label>
+            <input type="file" class="form-control-file" id="profilePhoto" name="profilePhoto">
           </div>
         </div>
-        <!-- Add more registration fields as needed -->
-        <button type="submit" class="btn btn-primary">Register</button>
+        <!-- Surname -->
+        <div class="form-group">
+          <label for="surname">Surname</label>
+          <input type="text" class="form-control" id="surname" name="surname" required>
+        </div>
+        <!-- Name -->
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <!-- Birthday Date -->
+        <div class="form-group">
+          <label for="birthdayDate">Birthday Date</label>
+          <input type="date" class="form-control" id="birthdayDate" name="birthdayDate">
+        </div>
+        <!-- Quotes -->
+        <div class="form-group">
+          <label for="quotes">Quotes</label>
+          <textarea class="form-control" id="quotes" name="quotes" rows="4"></textarea>
+        </div>
+        <!-- Save Changes Button -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
       </form>
     </div>
   </div>
@@ -135,27 +165,11 @@
       setTheme(); // Set the theme immediately upon switch change
   });
 
-  // Password toggle functionality
-  const passwordInput = document.querySelector('#password');
-  const passwordToggle = document.querySelector('#passwordToggle');
-  const toggleImage = document.querySelector('#toggleImage');
-  let passwordVisible = false; // Track password visibility
-
-  passwordToggle.addEventListener('click', function () {
-      if (passwordVisible) {
-          passwordInput.type = 'password';
-          toggleImage.src = 'eye.png'; // Set the "eye" icon
-      } else {
-          passwordInput.type = 'text';
-          toggleImage.src = 'eye-slash.png'; // Set the "eye-slash" icon
-      }
-      passwordVisible = !passwordVisible; // Toggle the visibility state
-  });
-
   // Call setTheme to apply the theme when the page loads
   setTheme();
 </script>
 
 </body>
 </html>
+
 
