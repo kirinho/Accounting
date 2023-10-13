@@ -83,6 +83,13 @@
   <div class="row justify-content-center">
     <div class="col-md-4">
       <h2>Register</h2>
+      <!-- Add a section to display an error message -->
+      <c:if test="${param.error == 'exists'}">
+        <div class="alert alert-danger" role="alert">
+          User with this username already exists.
+        </div>
+      </c:if>
+      <!-- Registration form -->
       <form action="/register" method="POST"> <!-- Updated action to match the controller endpoint -->
         <div class="form-group">
           <label for="username">Username</label>
@@ -158,4 +165,5 @@
 
 </body>
 </html>
+
 
