@@ -15,7 +15,10 @@ public class MainController {
     public String login(Model model) {
         return "login";
     }
-
+    @GetMapping("/register")
+    public String register(Model model) {
+        return "register";
+    }
 
     @GetMapping("/account")
     public String account(Model model) {
