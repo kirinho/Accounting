@@ -50,26 +50,53 @@
         .theme-switch .custom-control-label::before {
             content: '';
         }
+                /* Sidebar styles */
+        #sidebar {
+            display: none;
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 250px;
+            background-color: #f8f9fa;
+            border-left: 1px solid #dee2e6;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .sidebar-link {
+            padding: 10px;
+            display: block;
+        }
+
+        /* Custom CSS to shift content to the left when sidebar is open */
+        .content-shifted {
+            margin-right: 250px;
+            transition: margin-right 0.3s;
+        }
+
+        /* Style for the scroll-back button */
+        .btn-scroll-back {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
-<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">
+            <img src="imageLogo.png" alt="Logo" width="30" height="30">
+            Accounting
+        </a>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">
-        <img src="imageLogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
-        Accounting
-    </a>
+        <ul class="navbar-nav ml-auto">
 
-    <div class="ml-auto">
-        <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="register">Register</a>
             </li>
             <li class="nav-item">
                 <div class="theme-switch custom-control custom-switch d-inline-block">
@@ -77,10 +104,26 @@
                     <label class="custom-control-label" for="themeSwitch"></label>
                 </div>
             </li>
-        </ul>
-    </div>
-</nav>
 
+
+            <li class="nav-item">
+                <img src="userAva.png" alt="User Avatar" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div id="sidebar" class="bg-light border-right">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="register">Register</a></li>
+        <li class="list-group-item"><a href="login">Login</a></li>
+    </ul>
+
+    <!-- Add the scroll-back button inside the sidebar -->
+    <button id="scrollBackButton" class="btn-scroll-back">
+        <img src="scroll-back.png" alt="Scroll Back" width="20" height="20">
+    </button>
+</div>
 
 <header class="jumbotron text-center">
     <h1>Welcome to Your Accounting Dashboard</h1>
@@ -141,7 +184,7 @@
         }
     }
 
-    // Add an event listener to the theme switch
+  // Add an event listener to the theme switch
     const themeSwitch = document.querySelector('#themeSwitch');
     themeSwitch.addEventListener('change', function () {
         const isDarkMode = this.checked;
@@ -151,9 +194,37 @@
 
     // Call setTheme to apply the theme when the page loads
     setTheme();
+
+    const settingsButton = document.getElementById('settingsButton');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('main');
+    const scrollBackButton = document.getElementById('scrollBackButton');
+
+    settingsButton.addEventListener('click', function () {
+        // Toggle the visibility of the sidebar and shift content when the settings button is clicked
+        if (sidebar.style.display === 'none') {
+            sidebar.style.display = 'block';
+            content.classList.add('content-shifted');
+        } else {
+            sidebar.style.display = 'none';
+            content.classList.remove('content-shifted');
+        }
+    });
+
+    scrollBackButton.addEventListener('click', function () {
+        // Hide the sidebar and remove content shift when the scroll back button is clicked
+        sidebar.style.display = 'none';
+        content.classList.remove('content-shifted');
+    });
 </script>
 </body>
 </html>
+
+
+
+
+
+
 
 
 

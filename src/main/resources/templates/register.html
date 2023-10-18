@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - Accounting Website</title>
-  <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
   <style>
     :root {
         --background-color: #ffffff;
@@ -84,30 +82,35 @@
     <div class="col-md-4">
       <h2>Register</h2>
       <!-- Add a section to display an error message -->
-      <c:if test="${param.error == 'exists'}">
-        <div class="alert alert-danger" role="alert">
-          User with this username already exists.
-        </div>
-      </c:if>
+      <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+      </div>
       <!-- Registration form -->
-      <form action="/register" method="POST"> <!-- Updated action to match the controller endpoint -->
+      <form action="/register" method="POST">
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" class="form-control" id="username" name="username" required>
         </div>
-        <div class="form-group password-group">
+        <div class="form-group">
           <label for="password">Password</label>
-          <div class="input-group">
-            <input type="password" class="form-control" id="password" name="password" required>
-            <!-- Replace with PNG image button -->
-            <button type="button" class="btn password-toggle" id="passwordToggle">
-              <img src="eye.png" alt="Toggle Password" id="toggleImage" width="25" height="25">
-            </button>
-          </div>
+          <input type="password" class="form-control" id="password" name="password" required>
         </div>
-        <!-- Add more registration fields as needed -->
+        <div class="form-group">
+          <label for="surname">Surname</label>
+          <input type="text" class="form-control" id="surname" name="surname" required>
+        </div>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="dateOfBirth">Date of Birth</label>
+          <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
+        </div>
         <button type="submit" class="btn btn-primary">Register</button>
       </form>
+
+
     </div>
   </div>
 </section>
