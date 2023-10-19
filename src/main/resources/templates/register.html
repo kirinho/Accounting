@@ -7,47 +7,50 @@
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
     :root {
-        --background-color: #ffffff;
-        --text-color: #000000;
+      --background-color: #ffffff;
+      --text-color: #000000;
     }
 
     .dark-theme {
-        --background-color: #333333;
-        --text-color: #ffffff;
+      --background-color: #333333;
+      --text-color: #ffffff;
     }
 
     body {
-        background-color: var(--background-color);
-        color: var(--text-color);
-        transition: background-color 0.5s, color 0.5s;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: background-color 0.5s, color 0.5s;
     }
 
     .theme-switch {
-        margin-left: 10px;
-        margin-top: 8px;
+      margin-left: 10px;
+      margin-top: 8px;
     }
 
     .navbar-brand {
-        margin-right: auto;
-        margin-left: 10px;
+      margin-right: auto;
+      margin-left: 10px;
     }
 
     .theme-switch .custom-control-label::before {
-        content: '';
+      content: '';
     }
 
     /* Style for the password toggle button and icons */
     .password-group {
-        position: relative;
+      position: relative;
     }
 
     .password-toggle {
-        cursor: pointer;
-        padding: 5px;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
+      cursor: pointer;
+      padding: 5px;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    .password-toggle img {
+      width: 16px; /* Adjust the size as needed */
     }
   </style>
 </head>
@@ -93,7 +96,13 @@
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" name="password" required>
+          <div class="password-group">
+            <input type="password" class="form-control" id="password" name="password" required>
+            <i class="password-toggle" id="passwordToggle">
+              <img src="eye.png" alt="Toggle Password">
+            </i>
+          </div>
+          <small id="passwordError" class="text-danger"></small>
         </div>
         <div class="form-group">
           <label for="surname">Surname</label>
@@ -107,10 +116,8 @@
           <label for="dateOfBirth">Date of Birth</label>
           <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required>
         </div>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary" id="submitButton" disabled>Register</button>
       </form>
-
-
     </div>
   </div>
 </section>
@@ -125,48 +132,73 @@
 <script>
   // Function to set the theme based on user preference
   function setTheme() {
-      const themeSwitch = document.querySelector('#themeSwitch');
-      const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    const themeSwitch = document.querySelector('#themeSwitch');
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
 
-      if (isDarkMode) {
-          document.body.classList.add('dark-theme');
-          themeSwitch.checked = true;
-      } else {
-          document.body.classList.remove('dark-theme');
-          themeSwitch.checked = false;
-      }
+    if (isDarkMode) {
+      document.body.classList.add('dark-theme');
+      themeSwitch.checked = true;
+    } else {
+      document.body.classList.remove('dark-theme');
+      themeSwitch.checked = false;
+    }
   }
 
   // Add an event listener to the theme switch
   const themeSwitch = document.querySelector('#themeSwitch');
   themeSwitch.addEventListener('change', function () {
-      const isDarkMode = this.checked;
-      localStorage.setItem('darkMode', isDarkMode);
-      setTheme(); // Set the theme immediately upon switch change
+    const isDarkMode = this.checked;
+    localStorage.setItem('darkMode', isDarkMode);
+    setTheme(); // Set the theme immediately upon switch change
   });
 
   // Password toggle functionality
   const passwordInput = document.querySelector('#password');
   const passwordToggle = document.querySelector('#passwordToggle');
-  const toggleImage = document.querySelector('#toggleImage');
+  const toggleImage = document.querySelector('.password-toggle img');
   let passwordVisible = false; // Track password visibility
 
   passwordToggle.addEventListener('click', function () {
-      if (passwordVisible) {
-          passwordInput.type = 'password';
-          toggleImage.src = 'eye.png'; // Set the "eye" icon
-      } else {
-          passwordInput.type = 'text';
-          toggleImage.src = 'eye-slash.png'; // Set the "eye-slash" icon
-      }
-      passwordVisible = !passwordVisible; // Toggle the visibility state
+    if (passwordVisible) {
+      passwordInput.type = 'password';
+      toggleImage.src = 'eye.png'; // Set the "eye" icon
+    } else {
+      passwordInput.type = 'text';
+      toggleImage.src = 'eye-slash.png'; // Set the "eye-slash" icon
+    }
+    passwordVisible = !passwordVisible; // Toggle the visibility state
+  });
+
+  // Add an input event listener to the password field for length validation
+  const passwordField = document.getElementById('password');
+  const passwordError = document.getElementById('passwordError');
+  const submitButton = document.getElementById('submitButton');
+
+  passwordField.addEventListener('input', function () {
+    if (passwordField.value.length < 8) {
+      passwordError.textContent = 'Password must be at least 8 characters.';
+      submitButton.disabled = true;
+    } else {
+      passwordError.textContent = '';
+      submitButton.disabled = false;
+    }
   });
 
   // Call setTheme to apply the theme when the page loads
   setTheme();
 </script>
-
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
 
 
