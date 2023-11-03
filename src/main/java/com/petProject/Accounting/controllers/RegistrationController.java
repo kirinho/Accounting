@@ -1,5 +1,5 @@
 package com.petProject.Accounting.controllers;
-import com.petProject.Accounting.entities.UserAuthentication;
+import com.petProject.Accounting.entities.User;
 import com.petProject.Accounting.repositories.UserRepository;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class RegistrationController {
                                @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateOfBirth,
                                Model model) {
         // Check if the user with the given username already exists
-        UserAuthentication existingUser = userRepository.findByUsername(username);
+        User existingUser = userRepository.findByUsername(username);
 
         if (existingUser != null) {
             // User with the same username already exists, handle the error (e.g., display a message)
@@ -31,19 +31,13 @@ public class RegistrationController {
             return "register";
         } else {
             // User doesn't exist, create a new user
-            UserAuthentication newUser = new UserAuthentication();
+            User newUser = new User();
             newUser.setUsername(username);
             newUser.setPassword(password);
             newUser.setSurname(surname);
             newUser.setName(name);
             newUser.setDateOfBirth(dateOfBirth);
             userRepository.save(newUser);
-//            System.out.println(newUser.getUsername());
-//            System.out.println(newUser.getPassword());
-//            System.out.println(newUser.getSurname());
-//            System.out.println(newUser.getName());
-//            System.out.println(newUser.getDateOfBirth());
-
             return "redirect:/account";
         }
     }
