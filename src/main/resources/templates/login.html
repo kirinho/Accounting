@@ -60,7 +60,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">
-        <img src="imageLogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
+        <img src="images/imageLogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
         Accounting
     </a>
 
@@ -86,7 +86,7 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             <h2>Login</h2>
-            <form action="process_login.php" method="POST">
+            <form class="form-signin" method="post" action="/login">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" class="form-control" id="username" name="username" required>
@@ -97,7 +97,7 @@
                         <input type="password" class="form-control" id="password" name="password" required>
                         <!-- Replace with PNG image button -->
                         <button type="button" class="btn password-toggle" id="passwordToggle">
-                            <img src="eye.png" alt="Toggle Password" id="toggleImage" width="25" height="25">
+                            <img src="images/eye.png" alt="Toggle Password" id="toggleImage" width="25" height="25">
                         </button>
                     </div>
                 </div>
@@ -146,10 +146,10 @@
     passwordToggle.addEventListener('click', function () {
         if (passwordVisible) {
             passwordInput.type = 'password';
-            toggleImage.src = 'eye.png'; // Set the "eye" icon
+            toggleImage.src = 'images/eye.png'; // Set the "eye" icon
         } else {
             passwordInput.type = 'text';
-            toggleImage.src = 'eye-slash.png'; // Set the "eye-slash" icon
+            toggleImage.src = 'images/eye-slash.png'; // Set the "eye-slash" icon
         }
         passwordVisible = !passwordVisible; // Toggle the visibility state
     });
@@ -163,4 +163,25 @@
 
 
 
-
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <title>Login Customer</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <form class="form-signin" method="post" action="/login">-->
+<!--        <h2 class="form-signin-heading">Login</h2>-->
+<!--        <p>-->
+<!--            <label for="username">Username</label>-->
+<!--            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            <label for="password">Password</label>-->
+<!--            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>-->
+<!--        </p>-->
+<!--        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

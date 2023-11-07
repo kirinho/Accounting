@@ -73,6 +73,30 @@
             border: none;
             cursor: pointer;
         }
+/* Style for the "Logout" button in the sidebar */
+        .btn-logout {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none; /* Remove underline */
+            color: inherit; /* Inherit text color */
+            transition: color 0.3s; /* Add a color transition effect */
+        }
+
+        /* Hover effect */
+        .btn-logout:hover {
+            color: #007bff; /* Change text color on hover (adjust the color as needed) */
+        }
+
+        /* Active effect (when the button is clicked) */
+        .btn-logout:active {
+            color: #0056b3; /* Change text color on click (adjust the color as needed) */
+        }
+
+}
     </style>
 </head>
 <body>
@@ -80,8 +104,8 @@
 <!-- Header Section -->
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">
-            <img src="imageLogo.png" alt="Logo" width="30" height="30">
+        <a class="navbar-brand" href="/" onclick="event.preventDefault(); window.location.href='/account';">
+            <img src="images/imageLogo.png" alt="Logo" width="30" height="30">
             Accounting
         </a>
 
@@ -99,7 +123,7 @@
 
 
             <li class="nav-item">
-                <input type="image" src="userAva.png" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+                <input type="image" src="images/userAva.png" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
             </li>
         </ul>
     </nav>
@@ -111,12 +135,16 @@
         <li class="list-group-item"><a href="editProfile">Edit Profile</a></li>
         <li class="list-group-item"><a href="#">Transactions</a></li>
         <li class="list-group-item"><a href="#">Analytics</a></li>
-        <li class="list-group-item"><a href="#">Sign out</a></li>
+        <li class="list-group-item">
+            <form action="/logout" method="POST">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </li>
     </ul>
 
     <!-- Add the scroll-back button inside the sidebar -->
     <button id="scrollBackButton" class="btn-scroll-back">
-        <img src="scroll-back.png" alt="Scroll Back" width="20" height="20">
+        <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
     </button>
 </div>
 
@@ -141,7 +169,9 @@
         <h2>Analytics</h2>
         <!-- Display analytics data here -->
     </section>
+
 </main>
+
 
 <!-- Include Bootstrap JS and jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

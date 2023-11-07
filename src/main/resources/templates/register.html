@@ -58,7 +58,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="/">
-    <img src="imageLogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
+    <img src="images/imageLogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
     Accounting
   </a>
 
@@ -99,7 +99,7 @@
           <div class="password-group">
             <input type="password" class="form-control" id="password" name="password" required>
             <i class="password-toggle" id="passwordToggle">
-              <img src="eye.png" alt="Toggle Password">
+              <img src="images/eye.png" alt="Toggle Password">
             </i>
           </div>
           <small id="passwordError" class="text-danger"></small>
@@ -161,10 +161,10 @@
   passwordToggle.addEventListener('click', function () {
     if (passwordVisible) {
       passwordInput.type = 'password';
-      toggleImage.src = 'eye.png'; // Set the "eye" icon
+      toggleImage.src = 'images/eye.png'; // Set the "eye" icon
     } else {
       passwordInput.type = 'text';
-      toggleImage.src = 'eye-slash.png'; // Set the "eye-slash" icon
+      toggleImage.src = 'images/eye-slash.png'; // Set the "eye-slash" icon
     }
     passwordVisible = !passwordVisible; // Toggle the visibility state
   });
@@ -189,7 +189,6 @@
 </script>
 </body>
 </html>
-
 
 
 
