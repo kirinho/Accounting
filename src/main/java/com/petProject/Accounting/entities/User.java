@@ -19,6 +19,15 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private Status status;
+    private String quotes;
+
+    public void setQuotes(String quotes) {
+        this.quotes = quotes;
+    }
+
+    public String getQuotes() {
+        return quotes;
+    }
 
     public void setRole(Role role) {
         this.role = role;

@@ -29,14 +29,12 @@ public class RegistrationController {
         User existingUser = userRepository.findByUsername(username);
 
         if (existingUser != null) {
-            // User with the same username already exists, handle the error (e.g., display a message)
             System.out.println("User exists!");
             model.addAttribute("errorMessage", "User with this username already exists.");
             return "register";
         } else {
             // User doesn't exist, create a new user
-            User newUser;
-            newUser = new User();
+            User newUser = new User();
             newUser.setUsername(username);
             String encodedPassword = passwordEncoder.encode(password);
             newUser.setPassword(encodedPassword);

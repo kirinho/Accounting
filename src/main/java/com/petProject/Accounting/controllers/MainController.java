@@ -1,4 +1,7 @@
 package com.petProject.Accounting.controllers;
+import com.petProject.Accounting.entities.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +23,8 @@ public class MainController {
         return "register";
     }
 
-    @GetMapping("/account")
-    public String account(Model model) {
-        return "account";
-    }
+
+
 
     @GetMapping("/editProfile")
     public String editProfile(Model model) {

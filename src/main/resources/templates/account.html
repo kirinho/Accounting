@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -150,11 +150,26 @@
 
 <!-- Main Content Section -->
 <main>
-    <!-- Profile Information -->
+
+
     <section id="profile-info">
-        <h1>User Profile</h1>
-        <!-- Display user profile information here -->
+        <h1 style="margin-bottom: 10px;">User Profile</h1>
+        <div class="d-flex align-items-start">
+            <img src="images/userAva.png" alt="User Photo" width="100" height="100" style="margin-right: 20px;">
+            <div style="margin-left: 20px;">
+                <p><strong>Username:</strong> <span th:text="${username}"></span></p>
+                <p><strong>Name:</strong> <span th:text="${name}"></span></p>
+                <p><strong>Surname:</strong> <span th:text="${surname}"></span></p>
+                <p><strong>Date of Birth:</strong> <span th:text="${dateOfBirth}"></span></p>
+                <p><strong>Quotes:</strong> <span th:text="${quotes}"></span></p>
+            </div>
+        </div>
     </section>
+
+
+
+
+
 
     <!-- Latest Transactions -->
     <section id="latest-transactions">
