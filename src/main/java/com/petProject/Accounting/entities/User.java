@@ -21,6 +21,18 @@ public class User {
     private Status status;
     private String quotes;
 
+    @Lob
+    @Column(name = "photo")
+    private byte[] photo;
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
     public void setQuotes(String quotes) {
         this.quotes = quotes;
     }

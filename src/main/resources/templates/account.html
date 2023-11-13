@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accounting Dashboard</title>
-    <!-- Include Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Include your custom CSS if needed -->
+
     <style>
-        /* Custom CSS for the sidebar */
+
         :root {
             --background-color: #ffffff;
             --text-color: #000000;
@@ -39,7 +38,7 @@
             content: '';
         }
 
-        /* Sidebar styles */
+
         #sidebar {
             display: none;
             position: fixed;
@@ -58,13 +57,13 @@
             display: block;
         }
 
-        /* Custom CSS to shift content to the left when sidebar is open */
+
         .content-shifted {
             margin-right: 250px;
             transition: margin-right 0.3s;
         }
 
-        /* Style for the scroll-back button */
+
         .btn-scroll-back {
             position: absolute;
             top: 10px;
@@ -73,7 +72,7 @@
             border: none;
             cursor: pointer;
         }
-/* Style for the "Logout" button in the sidebar */
+
         .btn-logout {
             background: none;
             border: none;
@@ -81,19 +80,19 @@
             font: inherit;
             cursor: pointer;
             outline: none;
-            text-decoration: none; /* Remove underline */
-            color: inherit; /* Inherit text color */
-            transition: color 0.3s; /* Add a color transition effect */
+            text-decoration: none;
+            color: #007bff;
+            transition: text-decoration 0.3s;
         }
 
-        /* Hover effect */
+
         .btn-logout:hover {
-            color: #007bff; /* Change text color on hover (adjust the color as needed) */
+            text-decoration: underline;
         }
 
-        /* Active effect (when the button is clicked) */
+
         .btn-logout:active {
-            color: #0056b3; /* Change text color on click (adjust the color as needed) */
+            text-decoration: underline;
         }
 
 }
@@ -101,7 +100,7 @@
 </head>
 <body>
 
-<!-- Header Section -->
+
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/" onclick="event.preventDefault(); window.location.href='/account';">
@@ -123,78 +122,73 @@
 
 
             <li class="nav-item">
-                <input type="image" src="images/userAva.png" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+                <input type="image" th:src="${userPhoto}" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
             </li>
         </ul>
     </nav>
+    <div id="sidebar" class="bg-light border-right">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="editProfile">Edit Profile</a></li>
+            <li class="list-group-item"><a href="#">Transactions</a></li>
+            <li class="list-group-item"><a href="#">Analytics</a></li>
+            <li class="list-group-item">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </li>
+        </ul>
+
+        <button id="scrollBackButton" class="btn-scroll-back">
+            <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
+        </button>
+    </div>
 </header>
 
-<!-- Sidebar Section (Initially Hidden) -->
-<div id="sidebar" class="bg-light border-right">
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item"><a href="editProfile">Edit Profile</a></li>
-        <li class="list-group-item"><a href="#">Transactions</a></li>
-        <li class="list-group-item"><a href="#">Analytics</a></li>
-        <li class="list-group-item">
-            <form action="/logout" method="POST">
-                <button type="submit" class="btn-logout">Logout</button>
-            </form>
-        </li>
-    </ul>
 
-    <!-- Add the scroll-back button inside the sidebar -->
-    <button id="scrollBackButton" class="btn-scroll-back">
-        <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
-    </button>
-</div>
 
-<!-- Main Content Section -->
+
+
 <main>
 
-
-    <section id="profile-info">
+    <section id="profile-info" style="margin-left: 25px;">
         <h1 style="margin-bottom: 10px;">User Profile</h1>
         <div class="d-flex align-items-start">
-            <img src="images/userAva.png" alt="User Photo" width="100" height="100" style="margin-right: 20px;">
+            <img th:src="${userPhoto}" alt="User Photo" width="200" height="200" style="margin-right: 20px;">
             <div style="margin-left: 20px;">
                 <p><strong>Username:</strong> <span th:text="${username}"></span></p>
                 <p><strong>Name:</strong> <span th:text="${name}"></span></p>
                 <p><strong>Surname:</strong> <span th:text="${surname}"></span></p>
                 <p><strong>Date of Birth:</strong> <span th:text="${dateOfBirth}"></span></p>
-                <p><strong>Quotes:</strong> <span th:text="${quotes}"></span></p>
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px; display: inline-block;">
+                    <strong>Quotes:</strong>
+                    <span style="margin-left: 5px;" th:text="${quotes}"></span>
+                </div>
+
             </div>
         </div>
     </section>
 
 
 
-
-
-
-    <!-- Latest Transactions -->
-    <section id="latest-transactions">
+    <section id="latest-transactions" style="margin-left: 25px;">
         <h2>Latest Transactions</h2>
         <table class="table">
-            <!-- Display latest transactions here -->
+
         </table>
     </section>
 
-    <!-- Analytics -->
-    <section id="analytics">
-        <h2>Analytics</h2>
-        <!-- Display analytics data here -->
-    </section>
+
 
 </main>
 
 
-<!-- Include Bootstrap JS and jQuery -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    // Function to set the theme based on user preference
+
     function setTheme() {
         const themeSwitch = document.querySelector('#themeSwitch');
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -208,7 +202,7 @@
         }
     }
 
-    // Add an event listener to the theme switch
+
     const themeSwitch = document.querySelector('#themeSwitch');
     themeSwitch.addEventListener('change', function () {
         const isDarkMode = this.checked;
@@ -225,7 +219,7 @@
     const scrollBackButton = document.getElementById('scrollBackButton');
 
     settingsButton.addEventListener('click', function () {
-        // Toggle the visibility of the sidebar and shift content when the settings button is clicked
+
         if (sidebar.style.display === 'none') {
             sidebar.style.display = 'block';
             content.classList.add('content-shifted');
@@ -236,7 +230,6 @@
     });
 
     scrollBackButton.addEventListener('click', function () {
-        // Hide the sidebar and remove content shift when the scroll back button is clicked
         sidebar.style.display = 'none';
         content.classList.remove('content-shifted');
     });

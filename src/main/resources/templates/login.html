@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Accounting Website</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
 
         :root {
@@ -41,7 +39,7 @@
             content: '';
         }
 
-        /* Style for the password toggle button and icons */
+
         .password-group {
             position: relative;
         }
@@ -95,7 +93,6 @@
                     <label for="password">Password</label>
                     <div class="input-group">
                         <input type="password" class="form-control" id="password" name="password" required>
-                        <!-- Replace with PNG image button -->
                         <button type="button" class="btn password-toggle" id="passwordToggle">
                             <img src="images/eye.png" alt="Toggle Password" id="toggleImage" width="25" height="25">
                         </button>
@@ -115,7 +112,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
-    // Function to set the theme based on user preference
     function setTheme() {
         const themeSwitch = document.querySelector('#themeSwitch');
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -129,59 +125,32 @@
         }
     }
 
-    // Add an event listener to the theme switch
     const themeSwitch = document.querySelector('#themeSwitch');
     themeSwitch.addEventListener('change', function () {
         const isDarkMode = this.checked;
         localStorage.setItem('darkMode', isDarkMode);
-        setTheme(); // Set the theme immediately upon switch change
+        setTheme();
     });
 
-    // Password toggle functionality
     const passwordInput = document.querySelector('#password');
     const passwordToggle = document.querySelector('#passwordToggle');
     const toggleImage = document.querySelector('#toggleImage');
-    let passwordVisible = false; // Track password visibility
+    let passwordVisible = false;
 
     passwordToggle.addEventListener('click', function () {
         if (passwordVisible) {
             passwordInput.type = 'password';
-            toggleImage.src = 'images/eye.png'; // Set the "eye" icon
+            toggleImage.src = 'images/eye.png';
         } else {
             passwordInput.type = 'text';
-            toggleImage.src = 'images/eye-slash.png'; // Set the "eye-slash" icon
+            toggleImage.src = 'images/eye-slash.png';
         }
-        passwordVisible = !passwordVisible; // Toggle the visibility state
+        passwordVisible = !passwordVisible;
     });
 
-    // Call setTheme to apply the theme when the page loads
+
     setTheme();
 </script>
 
 </body>
 </html>
-
-
-
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="utf-8">-->
-<!--    <title>Login Customer</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="container">-->
-<!--    <form class="form-signin" method="post" action="/login">-->
-<!--        <h2 class="form-signin-heading">Login</h2>-->
-<!--        <p>-->
-<!--            <label for="username">Username</label>-->
-<!--            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required>-->
-<!--        </p>-->
-<!--        <p>-->
-<!--            <label for="password">Password</label>-->
-<!--            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>-->
-<!--        </p>-->
-<!--        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>-->
-<!--    </form>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->

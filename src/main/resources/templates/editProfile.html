@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,65 +70,151 @@
         font-size: 16px;
         color: #666;
     }
+        #sidebar {
+        display: none;
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 250px;
+        background-color: #f8f9fa;
+        border-left: 1px solid #dee2e6;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+      .sidebar-link {
+          padding: 10px;
+          display: block;
+      }
+          .btn-scroll-back {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background-color: transparent;
+          border: none;
+          cursor: pointer;
+      }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none;
+            color: #007bff;
+            transition: text-decoration 0.3s;
+        }
+
+
+        .btn-logout:hover {
+            text-decoration: underline;
+        }
+
+
+        .btn-logout:active {
+            text-decoration: underline;
+        }
   </style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/">
-    <img src="images/imageLogo.png" alt="Logo" width="30" height="30" class="d-inline-block align-top">
-    Accounting
-  </a>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/" onclick="event.preventDefault(); window.location.href='/account';">
+      <img src="images/imageLogo.png" alt="Logo" width="30" height="30">
+      Accounting
+    </a>
 
-  <div class="ml-auto">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav ml-auto">
+
       <li class="nav-item">
         <a class="nav-link" href="/">Home</a>
       </li>
-
       <li class="nav-item">
         <div class="theme-switch custom-control custom-switch d-inline-block">
           <input type="checkbox" class="custom-control-input" id="themeSwitch">
           <label class="custom-control-label" for="themeSwitch"></label>
         </div>
       </li>
+
+
+      <li class="nav-item">
+        <input type="image" th:src="${userPhoto}" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+      </li>
     </ul>
+  </nav>
+  <div id="sidebar" class="bg-light border-right">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><a href="account">Account</a></li>
+      <li class="list-group-item"><a href="#">Transactions</a></li>
+      <li class="list-group-item"><a href="#">Analytics</a></li>
+      <li class="list-group-item">
+        <form action="/logout" method="POST">
+          <button type="submit" class="btn-logout">Logout</button>
+        </form>
+      </li>
+    </ul>
+
+    <button id="scrollBackButton" class="btn-scroll-back">
+      <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
+    </button>
   </div>
-</nav>
+</header>
+
+
+
 
 <section class="container my-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <h2>Edit Profile</h2>
-      <form action="process_edit_profile.php" method="POST">
-        <!-- Profile Photo Upload -->
+      <form action="/processEditProfile" method="POST" enctype="multipart/form-data">
+
+
         <div class="form-group profile-photo-upload">
           <label for="profilePhoto">Profile Photo</label>
           <div class="file-input-container">
             <label for="profilePhoto" class="file-input-text">Drag & Drop or Click to Upload</label>
-            <input type="file" class="form-control-file" id="profilePhoto" name="profilePhoto">
+            <input type="file" class="form-control-file" id="profilePhoto" name="profilePhoto" style="display: none;" onchange="handleFileSelect(this)">
+            <div class="image-overlay" onclick="showImageOptions(event)"></div>
+            <img id="imagePreview" alt="Image Preview" style="max-width: 100%; max-height: 200px; display: none;">
           </div>
         </div>
+        <div class="delete-button-container text-right">
+          <button type="button" class="btn-delete" onclick="deleteImageContainer()">Delete</button>
+        </div>
+
+
+
+
         <!-- Surname -->
         <div class="form-group">
           <label for="surname">Surname</label>
-          <input type="text" class="form-control" id="surname" name="surname" required>
+          <input type="text" class="form-control" id="surname" name="surname">
         </div>
+
         <!-- Name -->
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" class="form-control" id="name" name="name" required>
+          <input type="text" class="form-control" id="name" name="name">
         </div>
+
         <!-- Birthday Date -->
         <div class="form-group">
           <label for="birthdayDate">Birthday Date</label>
           <input type="date" class="form-control" id="birthdayDate" name="birthdayDate">
         </div>
+
         <!-- Quotes -->
         <div class="form-group">
           <label for="quotes">Quotes</label>
           <textarea class="form-control" id="quotes" name="quotes" rows="4"></textarea>
         </div>
+
         <!-- Save Changes Button -->
         <button type="submit" class="btn btn-primary">Save Changes</button>
       </form>
@@ -167,9 +254,106 @@
 
   // Call setTheme to apply the theme when the page loads
   setTheme();
-</script>
+      const settingsButton = document.getElementById('settingsButton');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('main');
+    const scrollBackButton = document.getElementById('scrollBackButton');
 
+    settingsButton.addEventListener('click', function () {
+
+        if (sidebar.style.display === 'none') {
+            sidebar.style.display = 'block';
+            content.classList.add('content-shifted');
+        } else {
+            sidebar.style.display = 'none';
+            content.classList.remove('content-shifted');
+        }
+    });
+
+    scrollBackButton.addEventListener('click', function () {
+        sidebar.style.display = 'none';
+        content.classList.remove('content-shifted');
+    });
+
+
+
+
+
+      function handleFileSelect(input) {
+        var preview = input.closest('.form-group').querySelector('.file-input-text');
+        var imagePreview = input.closest('.form-group').querySelector('#imagePreview');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(input.files[0]);
+
+            // Show the image preview
+            imagePreview.style.display = 'block';
+            preview.style.display = 'none';
+        } else {
+            // If no file is selected, display the default text
+            preview.textContent = 'Drag & Drop or Click to Upload';
+            preview.style.display = 'block';
+            imagePreview.style.display = 'none';
+        }
+    }
+
+    function triggerFileInput() {
+        document.getElementById('profilePhoto').click();
+    }
+
+    function showImageOptions(event) {
+        var imageOptions = event.currentTarget.querySelector('#imageOptions');
+        imageOptions.classList.toggle('show-options');
+    }
+
+
+
+
+
+function deleteImageContainer() {
+    var container = document.querySelector('.file-input-container');
+    var fileInput = container.querySelector('.form-control-file');
+    var preview = container.querySelector('.file-input-text');
+    var imagePreview = container.querySelector('#imagePreview');
+
+    // Clear the image preview
+    imagePreview.src = '';
+    imagePreview.style.display = 'none';
+
+    // Reset the file input value to allow re-uploading the same file
+    fileInput.value = '';
+
+    // Display the default text
+    preview.textContent = 'Drag & Drop or Click to Upload';
+    preview.style.display = 'block';
+
+    // Hide the image options
+    container.querySelector('.image-options').classList.remove('show-options');
+}
+
+
+    document.querySelector('.file-input-container').addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'copy';
+    });
+
+    document.querySelector('.file-input-container').addEventListener('drop', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var files = e.dataTransfer.files;
+        document.getElementById('profilePhoto').files = files;
+
+        // Handle the dropped files (update the preview)
+        handleFileSelect(document.getElementById('profilePhoto'));
+    });
+</script>
 </body>
 </html>
-
-

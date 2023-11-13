@@ -84,6 +84,27 @@
             border: none;
             cursor: pointer;
         }
+                .btn-logout {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            cursor: pointer;
+            outline: none;
+            text-decoration: none;
+            color: #007bff;
+            transition: text-decoration 0.3s;
+        }
+
+
+        .btn-logout:hover {
+            text-decoration: underline;
+        }
+
+
+        .btn-logout:active {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <header>
@@ -107,17 +128,23 @@
 
 
             <li class="nav-item">
-                <img src="images/userAva.png" alt="User Avatar" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+                <img th:src="${userPhoto}" alt="User Avatar" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
             </li>
         </ul>
     </nav>
     <div id="sidebar" class="bg-light border-right">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><a href="register">Register</a></li>
-            <li class="list-group-item"><a href="login">Login</a></li>
+            <li class="list-group-item"><a href="account">Account</a></li>
+            <li class="list-group-item"><a href="editProfile">Edit profile</a></li>
+            <li class="list-group-item"><a href="#">Transactions</a></li>
+            <li class="list-group-item"><a href="#">Analytics</a></li>
+            <li class="list-group-item">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </li>
         </ul>
 
-        <!-- Add the scroll-back button inside the sidebar -->
         <button id="scrollBackButton" class="btn-scroll-back">
             <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
         </button>
