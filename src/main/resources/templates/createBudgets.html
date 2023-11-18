@@ -1,22 +1,10 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Title</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--    <p th:text="'Hello, ' + ${greetings}"/>-->
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accounting Website</title>
-    <!-- Bootstrap CSS -->
+    <title>Create Budgets</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <style>
 
         :root {
@@ -24,9 +12,8 @@
             --text-color: #000000;
         }
 
-
         .dark-theme {
-            --background-color: #000000;
+            --background-color: #333333;
             --text-color: #ffffff;
         }
 
@@ -35,7 +22,6 @@
             color: var(--text-color);
             transition: background-color 0.5s, color 0.5s;
         }
-
 
         .theme-switch {
             margin-left: 10px;
@@ -50,7 +36,8 @@
         .theme-switch .custom-control-label::before {
             content: '';
         }
-                /* Sidebar styles */
+
+
         #sidebar {
             display: none;
             position: fixed;
@@ -69,13 +56,13 @@
             display: block;
         }
 
-        /* Custom CSS to shift content to the left when sidebar is open */
+
         .content-shifted {
             margin-right: 250px;
             transition: margin-right 0.3s;
         }
 
-        /* Style for the scroll-back button */
+
         .btn-scroll-back {
             position: absolute;
             top: 10px;
@@ -84,7 +71,8 @@
             border: none;
             cursor: pointer;
         }
-                .btn-logout {
+
+        .btn-logout {
             background: none;
             border: none;
             padding: 0;
@@ -105,11 +93,40 @@
         .btn-logout:active {
             text-decoration: underline;
         }
+
+}
+        .budget-card {
+            margin-bottom: 10px;
+        }
+
+        .budget-button {
+            width: 100%;
+            height: 60px; /* Adjust height as needed for vertical expansion */
+            border: 2px solid; /* Set a default border color */
+        }
+
+        .dark-theme .budget-button {
+            border-color: #ffffff; /* White border for dark theme */
+        }
+
+        .light-theme .budget-button {
+            border-color: #000000; /* Black border for light theme */
+        }
+
+        .button-group {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .budget-card:hover .button-group {
+            display: block;
+        }
     </style>
 </head>
+<body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="/" onclick="event.preventDefault(); window.location.href='/account';">
             <img src="images/imageLogo.png" alt="Logo" width="30" height="30">
             Accounting
         </a>
@@ -128,16 +145,15 @@
 
 
             <li class="nav-item">
-                <img th:src="${userPhoto}" alt="User Avatar" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+                <input type="image" th:src="${userPhoto}" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
             </li>
         </ul>
     </nav>
     <div id="sidebar" class="bg-light border-right">
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><a href="account">Account</a></li>
-            <li class="list-group-item"><a href="editProfile">Edit profile</a></li>
-            <li class="list-group-item"><a href="createBudgets">Budgets</a></li>
-            <li class="list-group-item"><a href="#">Analytics</a></li>
+            <li class="list-group-item"><a href="editProfile">Edit Profile</a></li>
+            <li class="list-group-item"><a href="analytics">Analytics</a></li>
             <li class="list-group-item">
                 <form action="/logout" method="POST">
                     <button type="submit" class="btn-logout">Logout</button>
@@ -150,55 +166,37 @@
         </button>
     </div>
 </header>
+<div class="container mt-5">
+    <h2>Create Budgets</h2>
 
+    <button class="btn btn-primary" onclick="toggleForm()">Create New Budget</button>
 
-
-<header class="jumbotron text-center">
-    <h1>Welcome to Your Accounting Dashboard</h1>
-    <p>Effortlessly manage your finances and stay on top of your money.</p>
-    <a class="btn btn-primary btn-lg" href="account">Get Started</a>
-</header>
-
-
-<section class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Track Expenses</h2>
-            <p>Monitor your spending habits with our easy-to-use expense tracking tools.</p>
-            <a href="#">Learn More</a>
-        </div>
-        <div class="col-md-4">
-            <h2>Create Budgets</h2>
-            <p>Set up budgets for different categories and achieve your financial goals.</p>
-            <a href="createBudgets">Learn More</a>
-        </div>
-        <div class="col-md-4">
-            <h2>Generate Reports</h2>
-            <p>Get insights into your financial health with detailed reports and analytics.</p>
-            <a href="#">Learn More</a>
+    <div id="budgetForm" style="display: none;">
+        <form th:action="@{/createBudget}" method="post">
+            <div class="form-group">
+                <label for="budgetName">Budget Name:</label>
+                <input type="text" class="form-control" id="budgetName" name="budgetName" required>
+            </div>
+            <button type="submit" class="btn btn-success">Create</button>
+        </form>
+    </div>
+    <h2>Your Budgets</h2>
+    <div th:each="budget, stat : ${user.budgets}">
+        <div class="card budget-card">
+            <button class="btn btn-light budget-button text-left">
+                <span th:text="${stat.index + 1 + '. ' + budget.name}"></span> <!-- Display serial number -->
+            </button>
+            <div class="button-group">
+                <a th:href="@{'/editBudget/' + ${budget.id}}" class="btn btn-warning btn-sm ml-2">Edit</a>
+                <a th:href="@{'/deleteBudget/' + ${budget.id}}" class="btn btn-danger btn-sm ml-2">Delete</a>
+            </div>
         </div>
     </div>
-</section>
 
-
-<section class="container text-center my-5">
-    <!-- You can add your graph or chart here -->
-    <p>Placeholder for a financial graph or chart goes here.</p>
-</section>
-
-
-<footer class="text-center py-3">
-    <p>&copy; 2023 Accounting Website</p>
-</footer>
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+</div>
 
 <script>
-    // Function to set the theme based on user preference
+
     function setTheme() {
         const themeSwitch = document.querySelector('#themeSwitch');
         const isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -212,7 +210,7 @@
         }
     }
 
-  // Add an event listener to the theme switch
+
     const themeSwitch = document.querySelector('#themeSwitch');
     themeSwitch.addEventListener('change', function () {
         const isDarkMode = this.checked;
@@ -229,7 +227,7 @@
     const scrollBackButton = document.getElementById('scrollBackButton');
 
     settingsButton.addEventListener('click', function () {
-        // Toggle the visibility of the sidebar and shift content when the settings button is clicked
+
         if (sidebar.style.display === 'none') {
             sidebar.style.display = 'block';
             content.classList.add('content-shifted');
@@ -240,21 +238,14 @@
     });
 
     scrollBackButton.addEventListener('click', function () {
-        // Hide the sidebar and remove content shift when the scroll back button is clicked
         sidebar.style.display = 'none';
         content.classList.remove('content-shifted');
     });
+    function toggleForm() {
+        var form = document.getElementById('budgetForm');
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-

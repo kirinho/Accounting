@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    :root {
+         --background-color: #ffffff;
+         --text-color: #000000;
+     }
+
+     .dark-theme {
+         --background-color: #333333;
+         --text-color: #ffffff;
+     }
+
+     body {
+         background-color: var(--background-color);
+         color: var(--text-color);
+         transition: background-color 0.5s, color 0.5s;
+     }
+
+     .theme-switch {
+         margin-left: 10px;
+         margin-top: 8px;
+     }
+
+     .navbar-brand {
+         margin-right: auto;
+         margin-left: 10px;
+     }
+
+     .theme-switch .custom-control-label::before {
+         content: '';
+     }
+
+
+     #sidebar {
+         display: none;
+         position: fixed;
+         right: 0;
+         top: 0;
+         height: 100%;
+         width: 250px;
+         background-color: #f8f9fa;
+         border-left: 1px solid #dee2e6;
+         z-index: 1000;
+         overflow-y: auto;
+     }
+
+     .sidebar-link {
+         padding: 10px;
+         display: block;
+     }
+
+
+     .content-shifted {
+         margin-right: 250px;
+         transition: margin-right 0.3s;
+     }
+
+
+     .btn-scroll-back {
+         position: absolute;
+         top: 10px;
+         right: 10px;
+         background-color: transparent;
+         border: none;
+         cursor: pointer;
+     }
+
+     .btn-logout {
+         background: none;
+         border: none;
+         padding: 0;
+         font: inherit;
+         cursor: pointer;
+         outline: none;
+         text-decoration: none;
+         color: #007bff;
+         transition: text-decoration 0.3s;
+     }
+
+
+     .btn-logout:hover {
+         text-decoration: underline;
+     }
+
+
+     .btn-logout:active {
+         text-decoration: underline;
+     }
+
+    }
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background-color: var(--background-color); /* Default background color */
+        color: var(--text-color); /* Default text color */
+        transition: background-color 0.5s, color 0.5s; /* Smooth transition effect */
+    }
+
+    .dark-theme .table {
+        background-color: #333333; /* Dark theme background color */
+        color: #ffffff; /* Dark theme text color */
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        cursor: pointer; /* Add cursor style for clickable headers */
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .inner-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .inner-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .inner-table th {
+        background-color: #f2f2f2;
+    }
+   .sortable {
+        color: #000000; /* Set text color to black for sortable headers */
+    }
+    </style></head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/" onclick="event.preventDefault(); window.location.href='/account';">
+            <img src="images/imageLogo.png" alt="Logo" width="30" height="30">
+            Accounting
+        </a>
+
+        <ul class="navbar-nav ml-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+                <div class="theme-switch custom-control custom-switch d-inline-block">
+                    <input type="checkbox" class="custom-control-input" id="themeSwitch">
+                    <label class="custom-control-label" for="themeSwitch"></label>
+                </div>
+            </li>
+
+
+            <li class="nav-item">
+                <input type="image" th:src="${userPhoto}" alt="Settings" id="settingsButton" class="btn-settings" style="width: 30px; height: 30px; border-radius: 50%; cursor: pointer;margin-top: 5px;">
+            </li>
+        </ul>
+    </nav>
+    <div id="sidebar" class="bg-light border-right">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="account">Account</a></li>
+            <li class="list-group-item"><a href="editProfile">Edit Profile</a></li>
+            <li class="list-group-item"><a href="createBudgets">Budgets</a></li>
+            <li class="list-group-item">
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn-logout">Logout</button>
+                </form>
+            </li>
+        </ul>
+
+        <button id="scrollBackButton" class="btn-scroll-back">
+            <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
+        </button>
+    </div>
+</header>
+
+
+
+<h2 style="margin-left: 15px;">Analytics</h2>
+
+<section id="latest-transactions" style="margin-left: 25px;">
+    <h5>Your Transactions</h5>
+
+    <div th:each="entry, iterStat : ${budgetTransactions}">
+        <h6 th:text="${entry.key}"></h6>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="sortable" data-column="description">Description</th>
+                <th class="sortable" data-column="amount">Amount</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="transaction, iter : ${entry.value}" th:if="${iter.index < 10}">
+                <td th:text="${transaction.description}"></td>
+                <td th:text="${transaction.amount + '₴'}"
+                    th:style="${transaction.amount >= 0 ? 'color: green;' : 'color: red;'}"></td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td><strong>Sum</strong></td>
+                <td th:text="${sumTransactions[iterStat.index]} + '₴'" th:style="${sumTransactions[iterStat.index] >= 0 ? 'color: green;' : 'color: red;'}"></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</section>
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+
+    function setTheme() {
+        const themeSwitch = document.querySelector('#themeSwitch');
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+        if (isDarkMode) {
+            document.body.classList.add('dark-theme');
+            themeSwitch.checked = true;
+        } else {
+            document.body.classList.remove('dark-theme');
+            themeSwitch.checked = false;
+        }
+    }
+
+
+    const themeSwitch = document.querySelector('#themeSwitch');
+    themeSwitch.addEventListener('change', function () {
+        const isDarkMode = this.checked;
+        localStorage.setItem('darkMode', isDarkMode);
+        setTheme(); // Set the theme immediately upon switch change
+    });
+
+    // Call setTheme to apply the theme when the page loads
+    setTheme();
+
+    const settingsButton = document.getElementById('settingsButton');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.querySelector('main');
+    const scrollBackButton = document.getElementById('scrollBackButton');
+
+    settingsButton.addEventListener('click', function () {
+
+        if (sidebar.style.display === 'none') {
+            sidebar.style.display = 'block';
+            content.classList.add('content-shifted');
+        } else {
+            sidebar.style.display = 'none';
+            content.classList.remove('content-shifted');
+        }
+    });
+
+    scrollBackButton.addEventListener('click', function () {
+        sidebar.style.display = 'none';
+        content.classList.remove('content-shifted');
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to sort table rows
+        function sortTable(table, columnIndex) {
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort((a, b) => {
+                const aValue = a.children[columnIndex].textContent.trim();
+                const bValue = b.children[columnIndex].textContent.trim();
+
+                if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+                    return parseFloat(aValue) - parseFloat(bValue);
+                } else {
+                    return aValue.localeCompare(bValue);
+                }
+            });
+
+            // Reverse the array if already sorted
+            if (table.getAttribute('data-sort') === columnIndex.toString()) {
+                rows.reverse();
+            }
+
+            // Update the table body
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+
+            // Update the data-sort attribute
+            table.setAttribute('data-sort', columnIndex);
+        }
+
+        // Add click event listener to each th element
+        const thElements = document.querySelectorAll('.table th');
+        thElements.forEach(th => {
+            th.addEventListener('click', function () {
+                const table = this.closest('.table');
+                const columnIndex = Array.from(th.parentElement.children).indexOf(th);
+                sortTable(table, columnIndex);
+            });
+        });
+    });
+
+</script>
+
+</body>
+</html>

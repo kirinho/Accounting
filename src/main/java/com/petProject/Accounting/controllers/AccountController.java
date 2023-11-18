@@ -1,14 +1,19 @@
 package com.petProject.Accounting.controllers;
+import com.petProject.Accounting.entities.Budget;
+import com.petProject.Accounting.entities.Transaction;
 import com.petProject.Accounting.entities.User;
+import com.petProject.Accounting.repositories.TransactionRepository;
+import com.petProject.Accounting.service.BudgetService;
 import com.petProject.Accounting.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Base64;
+
+import java.util.*;
+
 
 
 @Controller
@@ -16,6 +21,12 @@ public class AccountController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BudgetService budgetService;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     @GetMapping("/account")
     public String account(Authentication authentication, Model model) {
@@ -38,9 +49,17 @@ public class AccountController {
             } else {
                 model.addAttribute("userPhoto", "images/userAva.png");
             }
+            List<Budget> budgets = budgetService.getAllBudgetsByUser(user);
+            Map<String, List<Transaction>> budgetTransactions = new HashMap<>();
+            List<Transaction> transactions;
+            for (Budget budget : budgets) {
+                transactions = transactionRepository.findByBudget(budget);
+                Collections.reverse(transactions);
+                budgetTransactions.put(budget.getName(), transactions);
+            }
 
+            model.addAttribute("budgetTransactions", budgetTransactions);
         }
-
         return "account";
     }
 }

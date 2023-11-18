@@ -1,6 +1,8 @@
 package com.petProject.Accounting.entities;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,6 +27,28 @@ public class User {
     @Column(name = "photo")
     private byte[] photo;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Budget> budgets = new ArrayList<>();
+
+
+
+    public List<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public void addBudget(Budget budget) {
+        budgets.add(budget);
+        budget.setUser(this);
+    }
+
+    public void removeBudget(Budget budget) {
+        budgets.remove(budget);
+        budget.setUser(null);
+    }
     public byte[] getPhoto() {
         return photo;
     }
