@@ -40,6 +40,8 @@ public class AnalyticsController {
         Map<String, List<Transaction>> budgetTransactions = new HashMap<>();
         List<Transaction> transactions;
         ArrayList<BigDecimal> sumTransactions = new ArrayList<>();
+        ArrayList<Integer> countTransactions = new ArrayList<>();
+        int countOfTransactions = 0;
         for (Budget budget : budgets) {
             transactions = transactionRepository.findByBudget(budget);
             Collections.reverse(transactions);
@@ -47,12 +49,24 @@ public class AnalyticsController {
             BigDecimal summ = BigDecimal.ZERO;
             for (int i = 0; i < transactions.size(); i++) {
                 summ = summ.add(transactions.get(i).getAmount());
+                countOfTransactions += 1;
             }
             sumTransactions.add(summ);
+            countTransactions.add(countOfTransactions);
+            countOfTransactions = 0;
         }
+
+        ArrayList<String> listOfKeys = new ArrayList<>(budgetTransactions.keySet());
         Collections.reverse(sumTransactions);
+        BigDecimal[] sumTransactionsArray = sumTransactions.toArray(new BigDecimal[0]);
+        String[] listOfKeysArray = listOfKeys.toArray(new String[0]);
+        Collections.reverse(countTransactions);
+        Integer[] countTransactionsArray = countTransactions.toArray(new Integer[0]);
         model.addAttribute("budgetTransactions", budgetTransactions);
         model.addAttribute("sumTransactions", sumTransactions);
+        model.addAttribute("listOfKeysArray", listOfKeysArray);
+        model.addAttribute("sumTransactionsArray", sumTransactionsArray);
+        model.addAttribute("countTransactionsArray", countTransactionsArray);
         return "analytics";
     }
 

@@ -184,7 +184,11 @@
     </section>
 
 
-
+<div th:if="${#maps.isEmpty(budgetTransactions)}">
+    <h2 style="margin-left: 15px;">You have no budgets, create it!</h2>
+    <a class="btn btn-primary btn-lg" style="margin-left: 15px;" href="createBudgets">Create budgets</a>
+</div>
+<div th:if="${not #maps.isEmpty(budgetTransactions)}">
     <section id="latest-transactions" style="margin-left: 25px;">
         <h2>Latest Transactions</h2>
 
@@ -205,18 +209,12 @@
             </div>
         </div>
     </section>
-
-
-
-
-
-
-
-
-
+</div>
 </main>
 
-
+<footer class="text-center py-3">
+    <p>&copy; 2023 Accounting Website</p>
+</footer>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>

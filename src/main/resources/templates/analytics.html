@@ -136,7 +136,23 @@
    .sortable {
         color: #000000; /* Set text color to black for sortable headers */
     }
-    </style></head>
+
+    .container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 200px;
+    }
+
+    .chart{
+        padding: 2rem;
+        border: 1px solid #f49131;
+        border-radius: 1rem;
+        background: #251c35;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+    }
+    </style>
+</head>
 <body>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -182,137 +198,222 @@
 </header>
 
 
+<div th:if="${#lists.isEmpty(listOfKeysArray)}">
+    <h2 style="margin-left: 15px;">You have no budgets, create it!</h2>
+    <a class="btn btn-primary btn-lg" style="margin-left: 15px;" href="createBudgets">Create budgets</a>
+</div>
+<div th:unless="${#lists.isEmpty(listOfKeysArray)}">
+    <h2 style="margin-left: 15px;">Analytics with data</h2>
 
-<h2 style="margin-left: 15px;">Analytics</h2>
+    <section id="latest-transactions" style="margin-left: 25px;">
+        <h5>Your budgets</h5>
 
-<section id="latest-transactions" style="margin-left: 25px;">
-    <h5>Your Transactions</h5>
+        <div th:each="entry, iterStat : ${budgetTransactions}">
+            <h6 th:text="${entry.key}"></h6>
 
-    <div th:each="entry, iterStat : ${budgetTransactions}">
-        <h6 th:text="${entry.key}"></h6>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="sortable" data-column="description">Description</th>
+                    <th class="sortable" data-column="amount">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="transaction, iter : ${entry.value}" th:if="${iter.index < 10}">
+                    <td th:text="${transaction.description}"></td>
+                    <td th:text="${transaction.amount + '₴'}"
+                        th:style="${transaction.amount >= 0 ? 'color: green;' : 'color: red;'}"></td>
+                </tr>
+                </tbody>
 
-        <table class="table">
-            <thead>
-            <tr>
-                <th class="sortable" data-column="description">Description</th>
-                <th class="sortable" data-column="amount">Amount</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="transaction, iter : ${entry.value}" th:if="${iter.index < 10}">
-                <td th:text="${transaction.description}"></td>
-                <td th:text="${transaction.amount + '₴'}"
-                    th:style="${transaction.amount >= 0 ? 'color: green;' : 'color: red;'}"></td>
-            </tr>
-            </tbody>
+                <tfoot>
+                <tr>
+                    <td><strong>Sum</strong></td>
+                    <td th:text="${sumTransactions[iterStat.index]} + '₴'" th:style="${sumTransactions[iterStat.index] >= 0 ? 'color: green;' : 'color: red;'}"></td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
 
-            <tfoot>
-            <tr>
-                <td><strong>Sum</strong></td>
-                <td th:text="${sumTransactions[iterStat.index]} + '₴'" th:style="${sumTransactions[iterStat.index] >= 0 ? 'color: green;' : 'color: red;'}"></td>
-            </tr>
-            </tfoot>
-        </table>
+
+
+
+
+    <h2 style="margin-left: 15px;">Analytics with charts</h2>
+    <div class="container">
+        <div>
+            <div class="chart">
+                <canvas id="myChart1" width="300" height="300"></canvas>
+            </div>
+        </div>
+
+        <div>
+            <div class="chart">
+                <canvas id="myChart2" width="300" height="300"></canvas>
+            </div>
+        </div>
     </div>
-</section>
+</div>
 
 
 
 
+<footer class="text-center py-3">
+    <p>&copy; 2023 Accounting Website</p>
+</footer>
 
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+        function setTheme() {
+            const themeSwitch = document.querySelector('#themeSwitch');
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
 
-    function setTheme() {
-        const themeSwitch = document.querySelector('#themeSwitch');
-        const isDarkMode = localStorage.getItem('darkMode') === 'true';
-
-        if (isDarkMode) {
-            document.body.classList.add('dark-theme');
-            themeSwitch.checked = true;
-        } else {
-            document.body.classList.remove('dark-theme');
-            themeSwitch.checked = false;
+            if (isDarkMode) {
+                document.body.classList.add('dark-theme');
+                themeSwitch.checked = true;
+            } else {
+                document.body.classList.remove('dark-theme');
+                themeSwitch.checked = false;
+            }
         }
-    }
 
 
-    const themeSwitch = document.querySelector('#themeSwitch');
-    themeSwitch.addEventListener('change', function () {
-        const isDarkMode = this.checked;
-        localStorage.setItem('darkMode', isDarkMode);
-        setTheme(); // Set the theme immediately upon switch change
-    });
+        const themeSwitch = document.querySelector('#themeSwitch');
+        themeSwitch.addEventListener('change', function () {
+            const isDarkMode = this.checked;
+            localStorage.setItem('darkMode', isDarkMode);
+            setTheme(); // Set the theme immediately upon switch change
+        });
 
-    // Call setTheme to apply the theme when the page loads
-    setTheme();
+        // Call setTheme to apply the theme when the page loads
+        setTheme();
 
-    const settingsButton = document.getElementById('settingsButton');
-    const sidebar = document.getElementById('sidebar');
-    const content = document.querySelector('main');
-    const scrollBackButton = document.getElementById('scrollBackButton');
+        const settingsButton = document.getElementById('settingsButton');
+        const sidebar = document.getElementById('sidebar');
+        const content = document.querySelector('main');
+        const scrollBackButton = document.getElementById('scrollBackButton');
 
-    settingsButton.addEventListener('click', function () {
+        settingsButton.addEventListener('click', function () {
 
-        if (sidebar.style.display === 'none') {
-            sidebar.style.display = 'block';
-            content.classList.add('content-shifted');
-        } else {
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+                content.classList.add('content-shifted');
+            } else {
+                sidebar.style.display = 'none';
+                content.classList.remove('content-shifted');
+            }
+        });
+
+        scrollBackButton.addEventListener('click', function () {
             sidebar.style.display = 'none';
             content.classList.remove('content-shifted');
-        }
-    });
-
-    scrollBackButton.addEventListener('click', function () {
-        sidebar.style.display = 'none';
-        content.classList.remove('content-shifted');
-    });
+        });
 
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Function to sort table rows
-        function sortTable(table, columnIndex) {
-            const tbody = table.querySelector('tbody');
-            const rows = Array.from(tbody.querySelectorAll('tr'));
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to sort table rows
+            function sortTable(table, columnIndex) {
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
 
-            rows.sort((a, b) => {
-                const aValue = a.children[columnIndex].textContent.trim();
-                const bValue = b.children[columnIndex].textContent.trim();
+                rows.sort((a, b) => {
+                    const aValue = a.children[columnIndex].textContent.trim();
+                    const bValue = b.children[columnIndex].textContent.trim();
 
-                if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
-                    return parseFloat(aValue) - parseFloat(bValue);
-                } else {
-                    return aValue.localeCompare(bValue);
+                    if (!isNaN(parseFloat(aValue)) && !isNaN(parseFloat(bValue))) {
+                        return parseFloat(aValue) - parseFloat(bValue);
+                    } else {
+                        return aValue.localeCompare(bValue);
+                    }
+                });
+
+                // Reverse the array if already sorted
+                if (table.getAttribute('data-sort') === columnIndex.toString()) {
+                    rows.reverse();
                 }
-            });
 
-            // Reverse the array if already sorted
-            if (table.getAttribute('data-sort') === columnIndex.toString()) {
-                rows.reverse();
+                // Update the table body
+                tbody.innerHTML = '';
+                rows.forEach(row => tbody.appendChild(row));
+
+                // Update the data-sort attribute
+                table.setAttribute('data-sort', columnIndex);
             }
 
-            // Update the table body
-            tbody.innerHTML = '';
-            rows.forEach(row => tbody.appendChild(row));
-
-            // Update the data-sort attribute
-            table.setAttribute('data-sort', columnIndex);
-        }
-
-        // Add click event listener to each th element
-        const thElements = document.querySelectorAll('.table th');
-        thElements.forEach(th => {
-            th.addEventListener('click', function () {
-                const table = this.closest('.table');
-                const columnIndex = Array.from(th.parentElement.children).indexOf(th);
-                sortTable(table, columnIndex);
+            // Add click event listener to each th element
+            const thElements = document.querySelectorAll('.table th');
+            thElements.forEach(th => {
+                th.addEventListener('click', function () {
+                    const table = this.closest('.table');
+                    const columnIndex = Array.from(th.parentElement.children).indexOf(th);
+                    sortTable(table, columnIndex);
+                });
             });
         });
+
+
+          const ctx1 = document.getElementById('myChart1');
+          const ctx2 = document.getElementById('myChart2');
+          var labels = /*[[${listOfKeysArray}]]*/;
+          var data = /*[[${sumTransactionsArray}]]*/;
+          var countTransactions = /*[[${countTransactionsArray}]]*/;
+          new Chart(ctx1, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Count of transactions',
+                data: countTransactions,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              },
+             plugins: {
+                title: {
+                    display: true,
+                    text: 'Chart that displays count of your transactions for each budget'
+                }
+            }
+        }
     });
 
+          new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Sum of the budget',
+                data: data,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                  }
+                },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Chart that displays overview of your budgets'
+                }
+            }
+        }
+    });
+  /*]]>*/
 </script>
+
+
 
 </body>
 </html>

@@ -60,7 +60,7 @@ public class BudgetController {
             String base64Photo = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(user.getPhoto());
             model.addAttribute("userPhoto", base64Photo);
         } else {
-            model.addAttribute("userPhoto", "images/userAva.png");
+            model.addAttribute("userPhoto", "/images/userAva.png");
         }
 
         return "editBudget";
