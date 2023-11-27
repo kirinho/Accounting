@@ -34,7 +34,7 @@ public class AnalyticsController {
             String base64Photo = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(user.getPhoto());
             model.addAttribute("userPhoto", base64Photo);
         } else {
-            model.addAttribute("userPhoto", "images/userAva.png");
+            model.addAttribute("userPhoto", "/images/userAva.png");
         }
         List<Budget> budgets = budgetService.getAllBudgetsByUser(user);
         Map<String, List<Transaction>> budgetTransactions = new HashMap<>();

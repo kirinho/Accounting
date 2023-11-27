@@ -29,7 +29,7 @@ public class RegistrationController {
         User existingUser = userRepository.findByUsername(username);
 
         if (existingUser != null) {
-            System.out.println("User exists!");
+
             model.addAttribute("errorMessage", "User with this username already exists.");
             return "register";
         } else {

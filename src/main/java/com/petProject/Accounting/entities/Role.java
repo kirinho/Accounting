@@ -2,26 +2,25 @@ package com.petProject.Accounting.entities;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
-    USER(Set.of(Permission.DEVELOPERS_READ)),
-    ADMIN(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE));
+    USER(Collections.singleton("ROLE_USER")),
+    ADMIN(Collections.singleton("ROLE_ADMIN"));
 
-    private final Set<Permission> permissions;
+    private final Set<SimpleGrantedAuthority> authorities;
 
-    Role(Set<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
-    public Set<Permission> getPermissions() {
-        return permissions;
+    Role(Set<String> roles) {
+        this.authorities = roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toSet());
     }
 
     public Set<SimpleGrantedAuthority> getAuthorities() {
-        return getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                .collect(Collectors.toSet());
+        return authorities;
     }
 }
+
+

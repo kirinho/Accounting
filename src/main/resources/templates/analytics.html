@@ -157,7 +157,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/" onclick="event.preventDefault(); window.location.href='/account';">
-            <img src="images/imageLogo.png" alt="Logo" width="30" height="30">
+            <img src="/images/imageLogo.png" alt="Logo" width="30" height="30">
             Accounting
         </a>
 
@@ -181,9 +181,10 @@
     </nav>
     <div id="sidebar" class="bg-light border-right">
         <ul class="list-group list-group-flush">
-            <li class="list-group-item"><a href="account">Account</a></li>
-            <li class="list-group-item"><a href="editProfile">Edit Profile</a></li>
-            <li class="list-group-item"><a href="createBudgets">Budgets</a></li>
+            <li class="list-group-item"><a href="/account">Account</a></li>
+            <li class="list-group-item"><a href="/editProfile">Edit Profile</a></li>
+            <li class="list-group-item"><a href="/createBudgets">Budgets</a></li>
+<!--            <li class="list-group-item"><a href="/settings">Settings</a></li>-->
             <li class="list-group-item">
                 <form action="/logout" method="POST">
                     <button type="submit" class="btn-logout">Logout</button>
@@ -192,7 +193,7 @@
         </ul>
 
         <button id="scrollBackButton" class="btn-scroll-back">
-            <img src="images/scroll-back.png" alt="Scroll Back" width="20" height="20">
+            <img src="/images/scroll-back.png" alt="Scroll Back" width="20" height="20">
         </button>
     </div>
 </header>
@@ -241,19 +242,21 @@
 
 
     <h2 style="margin-left: 15px;">Analytics with charts</h2>
-    <div class="container">
-        <div>
-            <div class="chart">
-                <canvas id="myChart1" width="300" height="300"></canvas>
+    <section id="display-charts">
+        <div class="container">
+            <div>
+                <div class="chart">
+                    <canvas id="myChart1" width="300" height="300"></canvas>
+                </div>
             </div>
-        </div>
 
-        <div>
-            <div class="chart">
-                <canvas id="myChart2" width="300" height="300"></canvas>
+            <div>
+                <div class="chart">
+                    <canvas id="myChart2" width="300" height="300"></canvas>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 
 

@@ -61,6 +61,7 @@ public class AccountController {
             model.addAttribute("budgetTransactions", budgetTransactions);
         }
         return "account";
+
     }
 }
 

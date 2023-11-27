@@ -84,11 +84,9 @@
   <div class="row justify-content-center">
     <div class="col-md-4">
       <h2>Register</h2>
-      <!-- Add a section to display an error message -->
       <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
         <p th:text="${errorMessage}"></p>
       </div>
-      <!-- Registration form -->
       <form action="/register" method="POST">
         <div class="form-group">
           <label for="username">Username</label>
