@@ -15,7 +15,7 @@
 	</parent>
 
 	<properties>
-		<java.version>11</java.version> <!-- Update to the Java version you are using -->
+		<java.version>17</java.version> <!-- Update to the Java version you are using -->
 	</properties>
 
 	<dependencies>
