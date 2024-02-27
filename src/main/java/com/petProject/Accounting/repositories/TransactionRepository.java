@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByBudget(Budget budget);
+    List<Transaction> findByBudgetId(Long budgetId);
 
 }

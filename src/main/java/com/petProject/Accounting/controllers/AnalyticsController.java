@@ -44,7 +44,6 @@ public class AnalyticsController {
         int countOfTransactions = 0;
         for (Budget budget : budgets) {
             transactions = transactionRepository.findByBudget(budget);
-            Collections.reverse(transactions);
             budgetTransactions.put(budget.getName(), transactions);
             BigDecimal summ = BigDecimal.ZERO;
             for (int i = 0; i < transactions.size(); i++) {
@@ -57,10 +56,8 @@ public class AnalyticsController {
         }
 
         ArrayList<String> listOfKeys = new ArrayList<>(budgetTransactions.keySet());
-        Collections.reverse(sumTransactions);
         BigDecimal[] sumTransactionsArray = sumTransactions.toArray(new BigDecimal[0]);
         String[] listOfKeysArray = listOfKeys.toArray(new String[0]);
-        Collections.reverse(countTransactions);
         Integer[] countTransactionsArray = countTransactions.toArray(new Integer[0]);
         model.addAttribute("budgetTransactions", budgetTransactions);
         model.addAttribute("sumTransactions", sumTransactions);
