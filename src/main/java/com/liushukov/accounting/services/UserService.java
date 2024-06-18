@@ -1,14 +1,15 @@
 package com.liushukov.accounting.services;
 
 import com.liushukov.accounting.dtos.RegisterDTO;
-import com.liushukov.accounting.exceptions.UserRetrievalException;
 import com.liushukov.accounting.models.User;
 import com.liushukov.accounting.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class UserService {
@@ -30,23 +31,23 @@ public class UserService {
             String username = userDetails.getUsername();
             return getUserDetails(username);
         } catch (Exception exception) {
-            throw new UserRetrievalException("Error retrieving user from authentication");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User retrieval exception", exception);
         }
     }
 
     public User updateUser(Authentication authentication, RegisterDTO registerDTO){
         User user = getUserFromAuthentication(authentication);
-        if (!registerDTO.getSurname().isEmpty()) {
-            user.setSurname(registerDTO.getSurname());
+        if (!registerDTO.surname().isEmpty()) {
+            user.setSurname(registerDTO.surname());
         }
-        if (!registerDTO.getName().isEmpty()) {
-            user.setName(registerDTO.getName());
+        if (!registerDTO.name().isEmpty()) {
+            user.setName(registerDTO.name());
         }
-        if (!registerDTO.getEmail().isEmpty()) {
-            user.setEmail(registerDTO.getEmail());
+        if (!registerDTO.email().isEmpty()) {
+            user.setEmail(registerDTO.email());
         }
-        if (!registerDTO.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        if (!registerDTO.password().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(registerDTO.password()));
         }
         userRepository.save(user);
         return user;

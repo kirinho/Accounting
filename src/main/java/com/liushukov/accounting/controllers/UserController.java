@@ -26,6 +26,7 @@ public class UserController {
         logger.info("got response");
         return ResponseEntity.ok(user);
     }
+
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(Authentication authentication, @RequestBody RegisterDTO registerDTO){
         logger.info("entrance in update user method");

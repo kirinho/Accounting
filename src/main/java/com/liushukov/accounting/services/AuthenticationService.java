@@ -27,10 +27,10 @@ public class AuthenticationService {
 
     public User signup(RegisterDTO input) {
         var user = new User()
-                .setName(input.getName())
-                .setSurname(input.getSurname())
-                .setEmail(input.getEmail())
-                .setPassword(passwordEncoder.encode(input.getPassword()));
+                .setName(input.name())
+                .setSurname(input.surname())
+                .setEmail(input.email())
+                .setPassword(passwordEncoder.encode(input.password()));
 
         return userRepository.save(user);
     }
@@ -38,10 +38,10 @@ public class AuthenticationService {
     public User authenticate(LoginDTO input) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()
+                        input.email(),
+                        input.password()
                 )
         );
-        return userRepository.findByEmail(input.getEmail()).orElseThrow();
+        return userRepository.findByEmail(input.email()).orElseThrow();
     }
 }
