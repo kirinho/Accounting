@@ -1,8 +1,9 @@
 ## Instruction to run that app:
-1. **clone this repo on your machine**
-2. **set your data in application properties file**
-3. **run project and open postman to test it (below will be demonstrated example of usage)**  
-
+```
+1. clone this repo on your machine
+2. set your data in application properties file
+3. run project and open postman to test it (below will be demonstrated example of usage)
+```
 ## Testing app  
 
 ![Screen1](https://github.com/kirinho/Accounting/blob/main/images/1.png?raw=true)  
@@ -11,8 +12,20 @@
 ![Screen2](https://github.com/kirinho/Accounting/blob/main/images/2.png?raw=true)  
 **validation during sign up (the same for login)**  
 ---
-![Screen3](https://github.com/kirinho/Accounting/blob/main/images/3.png?raw=true)  
+![Screen3.1](https://github.com/kirinho/Accounting/blob/main/images/3.1.png?raw=true)  
 **sign up**  
+---
+![Screen3.2](https://github.com/kirinho/Accounting/blob/main/images/3.2.jpg?raw=true)  
+**sent token to email for verification account**  
+---
+![Screen3.3](https://github.com/kirinho/Accounting/blob/main/images/3.3.png?raw=true)  
+**confirm account - account is enabled**  
+---
+![Screen3.4](https://github.com/kirinho/Accounting/blob/main/images/3.4.png?raw=true)  
+**handle exception during account confirmation - invalid token**  
+---
+![Screen3.5](https://github.com/kirinho/Accounting/blob/main/images/3.5.png?raw=true)  
+**handle exception during account confirmation - token was used**  
 ---
 ![Screen4](https://github.com/kirinho/Accounting/blob/main/images/4.png?raw=true)  
 **handle exception for sign up - 'User exists''**  
