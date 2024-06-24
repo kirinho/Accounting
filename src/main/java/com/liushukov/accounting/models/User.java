@@ -28,6 +28,12 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private EmailToken emailToken;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,7 +70,15 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
+    }
+
+    public User(){
+        this.enabled = false;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public long getId() {
@@ -130,6 +144,14 @@ public class User implements UserDetails {
 
     public void setBudgets(List<Budget> budgets) {
         this.budgets = budgets;
+    }
+
+    public EmailToken getEmailToken() {
+        return emailToken;
+    }
+
+    public void setEmailToken(EmailToken emailToken) {
+        this.emailToken = emailToken;
     }
 
     @Override
